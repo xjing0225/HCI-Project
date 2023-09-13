@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Browsing Insights",
+    "version": "1.0",
+    "description": "View and analyze your browsing behavior",
+    "permissions": ["history", "tabs"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+    }
+  }
