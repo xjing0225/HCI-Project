@@ -1,0 +1,174 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    display: flex;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+}
+
+main {
+    flex: 1;
+    padding-left: 350px;
+
+}
+
+/* navigation bar */
+nav {
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left:0;
+    justify-content: start;
+    align-items: start;  
+    padding-top: 50px;
+    background-image: linear-gradient(180deg, rgba(155, 209, 249, 0.90) 0%, rgba(255, 245, 195, 0.90) 100%);
+    overflow-x: hidden;
+
+}
+
+
+/* navigation bar items */
+nav a {
+    text-decoration: none;
+    color: black;
+    padding: 30px;
+    width: 100%; 
+    text-align: start;
+    display: block;  
+    transition: background-color 0.2s;  
+    box-sizing: border-box; 
+}
+
+nav a:hover {
+    font-weight: bold;
+    font-size: larger;
+}
+
+nav a.selected {
+    font-weight: bold;
+    font-size: larger;
+}
+
+/* search Page*/
+#searchPage,#trackingPage {
+    padding: 10px;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#searchInput {
+    width: 80%; 
+    font-size: 16px;
+    padding: 10px;
+}
+
+#clearSearchButton {
+    display: none;
+    background: transparent;
+    color: rgb(99, 167, 234);
+    cursor: pointer;
+    font-size: 30px;
+}
+
+#searchInput:not(:placeholder-shown) ~ #clearSearchButton {
+    display: inline;
+}
+
+/* sorting */
+.sortContainer {
+    margin-top: 30px;
+    margin-right: 90px;
+    text-align: right; 
+}
+
+#sortButton {
+    border: 1px solid #000;
+    padding: 5px 15px; 
+    cursor: pointer; 
+    width: 80px;
+}
+
+#sortButton:hover {
+    background-color: #c9e2f3; 
+}
+
+/* customized tracking page */
+#dateTimeFilter {
+    padding: 10px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+#domainFilter{
+    padding: 10px;
+    margin-bottom: 10px;
+ }
+#domainInput {
+    width: 300px;
+
+}
+#suggestionList, #selectedList {
+    list-style-type: none;
+    padding: 10px;
+}
+
+#suggestionList li:hover {
+    font-weight: bold;
+    color: rgb(46, 105, 224);
+    cursor: pointer;
+}
+
+.domainRemoveButton {
+    color: rgb(0, 0, 0);
+    background-color: white;
+    height: 10px;
+    width: 20px;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.domainRemoveButton:hover {
+    color:rgb(46, 105, 224);
+}
+
+/* record display */
+.date-title {
+    margin-top: 20px;
+    font-weight: bold;
+}
+.record-entry {
+    margin: 15px 0;
+    display: flex;          
+    align-items: center;    
+}
+.record-entry span {
+    width: 80px; 
+}
+
+.record-entry a {
+    margin: 0 20px;
+    display: block;      
+    width: 500px;        
+    white-space: nowrap; 
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+}
+
+.favicon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+}

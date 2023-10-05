@@ -1,10 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Browsing Insights</title>
-</head>
-<body>
-<script src="browsing-insights.js"></script>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browsing Insights</title>
+    <link rel="stylesheet" href="browsing-insights.css">
+    <script src="browsing-insights.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="domain-filtering.js" defer></script>
+    <script src="dateTime-filtering.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <a href="#" id="home">WELCOME</a>
+        <a href="#" id="search">SEARCH</a>
+        <a href="#" id="tracking">CUSTOMIZED TRACKING</a>
+        <a href="#" id="insights">INSIGHTS</a>
+    </nav>
+    <main>
+        <!-- Home Page Content -->
+        <div id="homePage"> 
+            <!-- Content for the home page here -->
+        </div>
+        <!-- Search Page Content -->
+        <div id="searchPage" style="display: none;"> 
+            <div class="searchBox">
+                <input type="text" id="searchInput" placeholder="Search browsing history...">
+                <span id="clearSearchButton" style="display: none;">×</span>
+            </div>
+            <div class="sortContainer">
+                <button id="sortButton">Newest</button>
+            </div>
+            <div id = "searchDisplay" class="recordsContainer"></div>
+        </div>
+
+        <!-- Tracking Page Content -->
+        <div id="trackingPage" style="display: none;">
+            <!-- Date-Time Filter -->
+            <section id="dateTimeFilter">
+                 <h2>Date-Time Filter</h2>
+                <label for="datePicker">Date:</label>
+                <input type="date" id="datePicker">
+                <label for="startTime">From:</label>
+                <input type="time" id="startTime">
+                <label for="endTime">To:</label>
+                <input type="time" id="endTime">
+                <button id="resetButton">Reset Time</button>
+            </section>
+
+
+            <section id="domainFilter">
+                <h2>Domain Filter</h2>
+                <select id="filterType">
+                    <option value="exclude">Exclude</option>
+                    <option value="include">Include</option>
+                </select>
+                <input type="text" id="domainInput" placeholder="Type to filter by domain...">
+                <ul id="suggestionList"></ul>
+                <h3>Selected Domains:</h3>
+                <ul id="selectedList"></ul>
+            </section> 
+        <div id="filterDisplay" class="recordsContainer"></div>
+        </div>
+        <!-- Insights Page Content -->
+        <div id="insightsPage" style="display: none;"> 
+            <!-- Content for the insights page here -->
+        </div>
+    </main>
 </body>
 </html>
+
