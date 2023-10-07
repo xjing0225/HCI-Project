@@ -1,3 +1,6 @@
+let entireHistory = [];
+let currentDisplayLimit = 100;
+
 //obtain browsing history using chrome history APIs: chrome.history.search() and chrome.history.getVisits()
 //the search method only returns the most recent visit to the urls visited
 function fetchHistory(callback) {
@@ -27,7 +30,8 @@ function extractHistory(historyItems, callback) {
             });
             processedItems++;
             if (processedItems === historyItems.length) {
-                records.sort(function(a, b) {return b.visit_time - a.visit_time;});//sort in descending order
+                //records.sort(function(a, b) {return b.visit_time - a.visit_time;});//sort in descending order
+                entireHistory = records;
                 callback(records);
             }
         });
@@ -37,6 +41,25 @@ function extractHistory(historyItems, callback) {
 //display the browsing history, by default the records should be grouped by date
 //the default sorting is displaying records descedningly
 
+function initializeDisplay(records, sortOrder = currentSort) {
+    let sortedRecords = records.slice().sort((a, b) => {
+        return sortOrder === 'newest' ? b.visit_time - a.visit_time : a.visit_time - b.visit_time;
+    });
+
+    currentDisplayLimit = 100; // Reset for the initial display
+    appendMoreRecords(sortedRecords);
+    window.onscroll = function () {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            appendMoreRecords(sortedRecords);
+        }
+    };
+}
+
+function appendMoreRecords(records) {
+    let toAppend = records.slice(0, currentDisplayLimit);
+    displayRecords(toAppend);
+    currentDisplayLimit += 5;
+}
 
 let currentSort = 'newest';
 function displayRecords(records, sortOrder = currentSort) {
@@ -116,14 +139,12 @@ function faviconURL(u) {
   
 //apply the specified filters on the records displayed
 function applyFilters() {
-    fetchHistory(function(records) {
-        let dateTimeFilteredRecords = filterByDateTime(records);
+        let dateTimeFilteredRecords = filterByDateTime(entireHistory);
         if(!dateTimeFilteredRecords) {
             return; // Return early if an error was encountered
         }
         let domainFilteredRecords = filterByDomain(dateTimeFilteredRecords);
-        displayRecords(domainFilteredRecords);
-    });
+        initializeDisplay(domainFilteredRecords);
 }
 
 
@@ -211,18 +232,24 @@ function showTab(tabId) {
         case "home":
             break;
         case "search":
-            searchHistory();
+            if (!entireHistory.length) {
+                fetchHistory(initializeDisplay); // fetch history only if it hasn't been fetched yet
+            } else {
+                searchHistory(); // uses the already fetched entireHistory
+            }
             break;
         case "tracking":
             fetchDomains(() => {
                 console.log('Domains fetched!');
             });
-            fetchHistory(displayRecords);
+            if (!entireHistory.length) {
+                fetchHistory(initializeDisplay);
+            } else {
+                initializeDisplay(entireHistory);
+            }
             break;
         case "insights":
             break;
     }
 }
-
-
 
