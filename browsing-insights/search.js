@@ -10,7 +10,7 @@ function searchHistory() {
     if (filteredRecords.length == 0) {
         document.querySelector(".recordsContainer").innerHTML = "No matching records found";
     } else {
-        initializeDisplay(filteredRecords);
+        appendRecords(filteredRecords);
     }
 }
 
@@ -33,5 +33,5 @@ function clearSearch() {
     document.getElementById('searchInput').value = '';
     // Hide the clear button
     document.getElementById('clearSearchButton').style.display = 'none';
-    initializeDisplay(entireHistory);
+    appendRecords(entireHistory);
 }

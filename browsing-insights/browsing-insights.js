@@ -1,8 +1,6 @@
+//obtain browsing history (last 90 days) using chrome history APIs: chrome.history.search() and chrome.history.getVisits()
+//the search method returns the most recent visit to the urls visited
 let entireHistory = [];
-let currentDisplayLimit = 100;
-
-//obtain browsing history using chrome history APIs: chrome.history.search() and chrome.history.getVisits()
-//the search method only returns the most recent visit to the urls visited
 function fetchHistory(callback) {
     chrome.history.search({
         'text': '', 
@@ -13,6 +11,7 @@ function fetchHistory(callback) {
         extractHistory(historyItems, callback);
     });
 }
+
 //from each url's most recent visit, use getVisits() to obtain all hisotry records
 //for each record, extract the title, url, visit_time and transition type
 function extractHistory(historyItems, callback) {
@@ -30,38 +29,39 @@ function extractHistory(historyItems, callback) {
             });
             processedItems++;
             if (processedItems === historyItems.length) {
-                //records.sort(function(a, b) {return b.visit_time - a.visit_time;});//sort in descending order
+                //get entireHistory records
                 entireHistory = records;
-                callback(records);
+                callback(entireHistory);
             }
         });
     });
 }
 
-//display the browsing history, by default the records should be grouped by date
-//the default sorting is displaying records descedningly
-
-function initializeDisplay(records, sortOrder = currentSort) {
-    let sortedRecords = records.slice().sort((a, b) => {
-        return sortOrder === 'newest' ? b.visit_time - a.visit_time : a.visit_time - b.visit_time;
+//implement infinite scrolling
+let displayLimit = 100;
+function appendRecords(records, sortOrder = currentSort) {
+    let sortedRecords = records.sort((a, b) => {
+        //the default sorting is descending
+        return sortOrder == 'newest' ? b.visit_time - a.visit_time : a.visit_time - b.visit_time;
     });
-
-    currentDisplayLimit = 100; // Reset for the initial display
-    appendMoreRecords(sortedRecords);
+    // load initial batch of records
+    displayRecords(sortedRecords.slice(0, displayLimit));
     window.onscroll = function () {
+        // Check if user has scrolled to the bottom
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            appendMoreRecords(sortedRecords);
+            if (displayLimit >= sortedRecords.length) {
+                return;
+            }
+            displayLimit += 10;
+            // Append and display more records
+            displayRecords(sortedRecords.slice(0, displayLimit));
         }
     };
 }
 
-function appendMoreRecords(records) {
-    let toAppend = records.slice(0, currentDisplayLimit);
-    displayRecords(toAppend);
-    currentDisplayLimit += 5;
-}
-
+//default sort is descending
 let currentSort = 'newest';
+//display records in the format of time, favicon and url title
 function displayRecords(records, sortOrder = currentSort) {
     let recordsContainers = document.querySelectorAll(".recordsContainer");
     recordsContainers.forEach(recordsContainer => {
@@ -144,7 +144,7 @@ function applyFilters() {
             return; // Return early if an error was encountered
         }
         let domainFilteredRecords = filterByDomain(dateTimeFilteredRecords);
-        initializeDisplay(domainFilteredRecords);
+        appendRecords(domainFilteredRecords);
 }
 
 
@@ -233,19 +233,20 @@ function showTab(tabId) {
             break;
         case "search":
             if (!entireHistory.length) {
-                fetchHistory(initializeDisplay); // fetch history only if it hasn't been fetched yet
+                fetchHistory(appendRecords); // fetch history only if it hasn't been fetched yet
             } else {
                 searchHistory(); // uses the already fetched entireHistory
             }
             break;
         case "tracking":
+            currentSort = 'newest';
             fetchDomains(() => {
                 console.log('Domains fetched!');
             });
             if (!entireHistory.length) {
-                fetchHistory(initializeDisplay);
+                fetchHistory(appendRecords);
             } else {
-                initializeDisplay(entireHistory);
+                appendRecords(entireHistory);
             }
             break;
         case "insights":
