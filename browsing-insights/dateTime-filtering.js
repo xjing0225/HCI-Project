@@ -13,15 +13,22 @@ function filterByDateTime(records) {
     }
     //check date specified
     if (selectedDate) {
-        startTimestamp = new Date(selectedDate).getTime();
-        endTimestamp = startTimestamp + 86400000;  // end of that day
+        //
+        let specifiedDateStart = new Date(selectedDate);
+        specifiedDateStart.setHours(0, 0, 0, 0);
+        startTimestamp = specifiedDateStart.getTime();
+        
+        let specifiedDateEnd = new Date(selectedDate);
+        specifiedDateEnd.setHours(23, 59, 59, 999);
+        endTimestamp = specifiedDateEnd.getTime();
+        
     } else {
         if (startTimeInput || endTimeInput) {
             alert("Please select a date when specifying start or end time.");
             return;
         }    
         startTimestamp = 0; 
-        endTimestamp = Date.now(); //current timestamp
+        endTimestamp = Date.now();
     }
     //check time range specified
     if (startTimeInput) {
