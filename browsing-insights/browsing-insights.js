@@ -161,17 +161,29 @@ document.addEventListener("DOMContentLoaded", function() {
     const contents = document.querySelectorAll("main > div");
     // Default tab
     let activeTab = "home"; 
-    //handle switching of tabs
-    showTab(activeTab);
+    // handle tab switching
+    function switchToTab(tabId) {
+        contents.forEach(section => section.style.display = "none");
+        navLinks.forEach(link => link.classList.remove("selected"));
+        activeTab = tabId;
+        showTab(activeTab);
+    }
+    // Handle tab switching for nav links
     navLinks.forEach(link => {
         link.addEventListener("click", function(event) {
             event.preventDefault();
-            // Update the activeTab and display the content
-            contents.forEach(section => section.style.display = "none");
-            navLinks.forEach(link => link.classList.remove("selected"));
-            activeTab = this.id;
-            showTab(activeTab);
+            switchToTab(this.id);
         });
+    });
+    // Handle switching of tabs for homepage's direct links
+    document.getElementById('homeToSearch').addEventListener('click', function(event) {
+        event.preventDefault();
+        switchToTab('search');
+    });
+
+    document.getElementById('homeToTracking').addEventListener('click', function(event) {
+        event.preventDefault();
+        switchToTab('tracking');
     });
 
     // Debounced search
@@ -230,7 +242,7 @@ function showTab(tabId) {
     // Load the content specific to the tab
     switch (tabId) {
         case "home":
-            break;
+            break;            
         case "search":
             if (!entireHistory.length) {
                 fetchHistory(appendRecords); // fetch history only if it hasn't been fetched yet
@@ -253,4 +265,3 @@ function showTab(tabId) {
             break;
     }
 }
-

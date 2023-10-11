@@ -11,8 +11,6 @@ html, body {
 
 main {
     flex: 1;
-    padding-left: 350px;
-
 }
 
 /* navigation bar */
@@ -54,9 +52,24 @@ nav a.selected {
     font-size: larger;
 }
 
+/* home Page*/
+#homePage {
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    height: 100vh; 
+    margin-left: 20%; 
+}
+
+.center-content {
+    padding-top: 200px;
+    padding-left: 250px;
+    text-align: center;
+}
+
 /* search Page*/
 #searchPage,#trackingPage {
-    padding: 10px;
+    padding-left: 400px;
 }
 
 .searchBox {
