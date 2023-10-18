@@ -35,12 +35,18 @@
                 <input type="text" id="searchInput" placeholder="Search browsing history...">
                 <span id="clearSearchButton" style="display: none;">×</span>
             </div>
-            <div class="sortContainer">
-                <button id="sortButton">Newest</button>
+            <!-- Date Picker and sorting for Search -->
+            <div class="dateSortContainer">
+                <div class="dateFilter">
+                    <label for="searchDatePicker">Date:</label>
+                    <input type="date" id="searchDatePicker">
+                </div>
+                <div class="sortContainer">
+                    <button id="sortButton">Newest</button>
+                </div>
             </div>
             <div id = "searchDisplay" class="recordsContainer"></div>
         </div>
-
         <!-- Tracking Page Content -->
         <div id="trackingPage" style="display: none;">
             <!-- Date-Time Filter -->
@@ -76,4 +82,5 @@
     </main>
 </body>
 </html>
+
 

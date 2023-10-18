@@ -137,17 +137,6 @@ function faviconURL(u) {
     return url.toString();
   }
   
-//apply the specified filters on the records displayed
-function applyFilters() {
-        let dateTimeFilteredRecords = filterByDateTime(entireHistory);
-        if(!dateTimeFilteredRecords) {
-            return; // Return early if an error was encountered
-        }
-        let domainFilteredRecords = filterByDomain(dateTimeFilteredRecords);
-        appendRecords(domainFilteredRecords);
-}
-
-
 //convert the retrieved visit_time to readable format, hour:min:sec
 function convertVisitTime(visitTime) {
     let date = new Date(visitTime);
@@ -155,7 +144,17 @@ function convertVisitTime(visitTime) {
     return timeString;
 }
 
+//apply the specified filters on the records displayed
+function applyFilters() {
+    let dateTimeFilteredRecords = filterByDateTime(entireHistory);
+    if(!dateTimeFilteredRecords) {
+        return; // Return early if an error was encountered
+    }
+    let domainFilteredRecords = filterByDomain(dateTimeFilteredRecords);
+    appendRecords(domainFilteredRecords);
+}
 
+//Event listeners
 document.addEventListener("DOMContentLoaded", function() {
     const navLinks = document.querySelectorAll("nav a");
     const contents = document.querySelectorAll("main > div");
@@ -219,6 +218,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         
     }
+    //handle date picker within the search page
+    document.getElementById('searchDatePicker').addEventListener('change', function() {
+        searchHistory();
+    });
+
     //handles filtering by date&time 
     document.getElementById("resetButton").addEventListener("click", function() {
         document.getElementById("startTime").value = "";
@@ -256,7 +260,7 @@ function showTab(tabId) {
                 console.log('Domains fetched!');
             });
             if (!entireHistory.length) {
-                fetchHistory(appendRecords);
+                fetchHistory(appendRecords); // fetch history only if it hasn't been fetched yet
             } else {
                 appendRecords(entireHistory);
             }

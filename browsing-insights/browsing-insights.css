@@ -54,17 +54,18 @@ nav a.selected {
 
 /* home Page*/
 #homePage {
-    display: flex;
-    /* justify-content: center;
-    align-items: center; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
     height: 100vh; 
-    margin-left: 20%; 
+    /* margin-left: 20%;  */
 }
 
 .center-content {
     padding-top: 200px;
     padding-left: 250px;
     text-align: center;
+    font-size: medium;
 }
 
 /* search Page*/
@@ -97,20 +98,27 @@ nav a.selected {
     display: inline;
 }
 
-/* sorting */
+/* date filtering and  sorting */
+.dateSortContainer {
+    display: flex;     
+    align-items: center; 
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
 .sortContainer {
-    margin-top: 30px;
     margin-right: 90px;
-    text-align: right; 
 }
 
 #sortButton {
     border: 1px solid #000;
-    padding: 5px 15px; 
-    cursor: pointer; 
+    padding: 5px 15px;
+    cursor: pointer;
     width: 80px;
-    background-color: rgba(255, 245, 195, 0.90)
+    background-color: rgba(255, 245, 195, 0.90);
 }
+
 
 #sortButton:hover {
     background-color: rgba(174, 236, 240, 0.90)

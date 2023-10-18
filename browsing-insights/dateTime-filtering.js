@@ -13,7 +13,6 @@ function filterByDateTime(records) {
     }
     //check date specified
     if (selectedDate) {
-        //
         let specifiedDateStart = new Date(selectedDate);
         specifiedDateStart.setHours(0, 0, 0, 0);
         startTimestamp = specifiedDateStart.getTime();

@@ -1,3 +1,5 @@
+//the series of activities 
+
 //set color for specific transition type
 function setColorForTransition(record, recordEntry) {
     if (record.transition === 'link') {
