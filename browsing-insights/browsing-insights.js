@@ -37,9 +37,13 @@ function extractHistory(historyItems, callback) {
     });
 }
 
+
 //implement infinite scrolling
 let displayLimit = 100;
 function appendRecords(records, sortOrder = currentSort) {
+    if (activeTab == 'tracking') {
+        sortOrder = defaultSort;
+    }
     let sortedRecords = records.sort((a, b) => {
         //the default sorting is descending
         return sortOrder == 'newest' ? b.visit_time - a.visit_time : a.visit_time - b.visit_time;
@@ -61,72 +65,77 @@ function appendRecords(records, sortOrder = currentSort) {
 
 //default sort is descending
 let currentSort = 'newest';
+let defaultSort = 'newest';
 //display records in the format of time, favicon and url title
 function displayRecords(records, sortOrder = currentSort) {
-    let recordsContainers = document.querySelectorAll(".recordsContainer");
-    recordsContainers.forEach(recordsContainer => {
-        recordsContainer.innerHTML = "";
-        if (records.length == 0) {
-            recordsContainer.innerHTML = "No records found.";
-            return;
-        }
-        //group records by date
-        let groupedRecords = {};
-        records.forEach(record => {
-            let dateKey = new Date(record.visit_time).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-            if (!groupedRecords[dateKey]) {
-                groupedRecords[dateKey] = [];
-            }
-            groupedRecords[dateKey].push(record);
+    if (activeTab == 'tracking') {
+        recordsContainer = document.getElementById("filterDisplay");
+        sortOrder = defaultSort;
+    }
+    else if (activeTab == 'search') { 
+        recordsContainer = document.getElementById("searchDisplay");
+    }
+    recordsContainer.innerHTML = "";
+    if (records.length == 0) {
+        recordsContainer.innerHTML = "No records found.";
+        return;
+    }
+    //group records by date
+    let groupedRecords = {};
+    records.forEach(record => {
+        let dateKey = new Date(record.visit_time).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
         });
-
-        //sort dates based on speicified order
-        let sortedDates;
-        if (sortOrder == "newest") {
-            sortedDates = Object.keys(groupedRecords).sort((a, b) => new Date(b) - new Date(a));
-        } else {
-            sortedDates = Object.keys(groupedRecords).sort((a, b) => new Date(a) - new Date(b));
+        if (!groupedRecords[dateKey]) {
+            groupedRecords[dateKey] = [];
         }
-        
-        sortedDates.forEach(dateKey => {
-            //display records by date 
-            let dateTitle = document.createElement("h2");
-            dateTitle.innerText = dateKey;
-            dateTitle.classList.add("date-title");
-            recordsContainer.appendChild(dateTitle);
-            groupedRecords[dateKey].forEach(record => {
-                let recordEntry = document.createElement("div");
-                recordEntry.classList.add("record-entry");
-                // visit_time
-                let time = document.createElement("span");
-                time.innerText = convertVisitTime(record.visit_time);
-                recordEntry.appendChild(time);
-                // favicon
-                let favicon = document.createElement("img");
-                favicon.classList.add("favicon");
-                favicon.src = faviconURL(record.url);
-                recordEntry.appendChild(favicon);
-                //depricated method
-                //favicon.src = `https://s2.googleusercontent.com/s2/favicons?domain=${new URL(record.url).hostname}`;
-                // favicon.onerror = function() {
-                //     favicon.src = 'images/favicon-default.svg';
-                //     console.log("updated");
-                // };
-                // url title
-                let link = document.createElement("a");
-                link.href = record.url;
-                link.innerText = record.title;
-                link.target = "_blank";
-                recordEntry.appendChild(link);
-                // append the record
-                recordsContainer.appendChild(recordEntry);
-            });
-        });
+        groupedRecords[dateKey].push(record);
     });
+
+    //sort dates based on speicified order
+    let sortedDates;
+    if (sortOrder == "newest") {
+        sortedDates = Object.keys(groupedRecords).sort((a, b) => new Date(b) - new Date(a));
+    } else {
+        sortedDates = Object.keys(groupedRecords).sort((a, b) => new Date(a) - new Date(b));
+    }
+    
+    sortedDates.forEach(dateKey => {
+        //display records by date 
+        let dateTitle = document.createElement("h2");
+        dateTitle.innerText = dateKey;
+        dateTitle.classList.add("date-title");
+        recordsContainer.appendChild(dateTitle);
+        groupedRecords[dateKey].forEach(record => {
+            let recordEntry = document.createElement("div");
+            recordEntry.classList.add("record-entry");
+            // visit_time
+            let time = document.createElement("span");
+            time.innerText = convertVisitTime(record.visit_time);
+            recordEntry.appendChild(time);
+            // favicon
+            let favicon = document.createElement("img");
+            favicon.classList.add("favicon");
+            favicon.src = faviconURL(record.url);
+            recordEntry.appendChild(favicon);
+            //depricated method
+            //favicon.src = `https://s2.googleusercontent.com/s2/favicons?domain=${new URL(record.url).hostname}`;
+            // favicon.onerror = function() {
+            //     favicon.src = 'images/favicon-default.svg';
+            //     console.log("updated");
+            // };
+            // url title
+            let link = document.createElement("a");
+            link.href = record.url;
+            link.innerText = record.title;
+            link.target = "_blank";
+            recordEntry.appendChild(link);
+            // append the record
+            recordsContainer.appendChild(recordEntry);
+        });
+        });
 }
 
 //fetch the favicon of urls
@@ -154,12 +163,12 @@ function applyFilters() {
     appendRecords(domainFilteredRecords);
 }
 
+// Default tab
+let activeTab = "home"; 
 //Event listeners
 document.addEventListener("DOMContentLoaded", function() {
     const navLinks = document.querySelectorAll("nav a");
     const contents = document.querySelectorAll("main > div");
-    // Default tab
-    let activeTab = "home"; 
     // handle tab switching
     function switchToTab(tabId) {
         contents.forEach(section => section.style.display = "none");
@@ -209,15 +218,15 @@ document.addEventListener("DOMContentLoaded", function() {
         sortButton.addEventListener('click', function() {
             if (currentSort == 'newest') {
                 currentSort = 'oldest';
-                document.getElementById('sortButton').innerText = 'Oldest';
+                document.getElementById('sortButton').innerHTML = '&#8593 Time';
             } else {
                 currentSort = 'newest';
-                document.getElementById('sortButton').innerText = 'Newest';
+                document.getElementById('sortButton').innerHTML = '&#8595 Time';
             } 
             searchHistory();
         });
-        
     }
+
     //handle date picker within the search page
     document.getElementById('searchDatePicker').addEventListener('change', function() {
         searchHistory();
@@ -255,14 +264,13 @@ function showTab(tabId) {
             }
             break;
         case "tracking":
-            currentSort = 'newest';
             fetchDomains(() => {
                 console.log('Domains fetched!');
             });
             if (!entireHistory.length) {
                 fetchHistory(appendRecords); // fetch history only if it hasn't been fetched yet
             } else {
-                appendRecords(entireHistory);
+                applyFilters();
             }
             break;
         case "insights":
