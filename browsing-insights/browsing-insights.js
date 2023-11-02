@@ -1,4 +1,4 @@
-//obtain browsing history (last 90 days) using chrome history APIs: chrome.history.search() and chrome.history.getVisits()
+//obtain browsing history using chrome history APIs: chrome.history.search() and chrome.history.getVisits()
 //the search method returns the most recent visit to the urls visited
 let entireHistory = [];
 function fetchHistory(callback) {
@@ -13,7 +13,7 @@ function fetchHistory(callback) {
 }
 
 //from each url's most recent visit, use getVisits() to obtain all hisotry records
-//for each record, extract the title, url, visit_time and transition type
+//for each record, extract the title, url, and visit_time
 function extractHistory(historyItems, callback) {
     let records = [];
     let processedItems = 0;
@@ -24,12 +24,12 @@ function extractHistory(historyItems, callback) {
                     title: historyItem.title,
                     url: historyItem.url,
                     visit_time: visitItem.visitTime,
-                    transition: visitItem.transition
+                    // transition: visitItem.transition
                 });
             });
             processedItems++;
             if (processedItems === historyItems.length) {
-                //get entireHistory records
+                //get entireHistory records 
                 entireHistory = records;
                 callback(entireHistory);
             }
@@ -63,9 +63,11 @@ function appendRecords(records, sortOrder = currentSort) {
     };
 }
 
+
 //default sort is descending
 let currentSort = 'newest';
 let defaultSort = 'newest';
+let recordsContainer;
 //display records in the format of time, favicon and url title
 function displayRecords(records, sortOrder = currentSort) {
     if (activeTab == 'tracking') {
@@ -163,8 +165,10 @@ function applyFilters() {
     appendRecords(domainFilteredRecords);
 }
 
-// Default tab
+// Default values
 let activeTab = "home"; 
+let isStacked = false; 
+
 //Event listeners
 document.addEventListener("DOMContentLoaded", function() {
     const navLinks = document.querySelectorAll("nav a");
@@ -192,6 +196,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('homeToTracking').addEventListener('click', function(event) {
         event.preventDefault();
         switchToTab('tracking');
+    });
+    document.getElementById('homeToInsights').addEventListener('click', function(event) {
+        event.preventDefault();
+        switchToTab('insights');
     });
 
     // Debounced search
@@ -244,6 +252,15 @@ document.addEventListener("DOMContentLoaded", function() {
     //handles filtering by domain
     document.getElementById('domainInput').addEventListener('input', suggestDomains);
     document.getElementById('filterType').addEventListener('change', applyFilters);
+
+    //handling insights generation
+    document.getElementById('websiteInput').addEventListener('input', suggestWebsites);
+    //handling the toggle for stacked bar plot view
+    document.getElementById('stackedToggle').addEventListener('change', function() {
+        isStacked = this.checked;
+        visualizeData(isStacked);
+    });
+    
 });
 
 
@@ -274,6 +291,14 @@ function showTab(tabId) {
             }
             break;
         case "insights":
+            fetchDomains(() => {
+                console.log('Domains fetched!');
+            });
+            if (!entireHistory.length) {
+                fetchHistory(() => {
+                    console.log('History fetched!');
+                }); // fetch history only if it hasn't been fetched yet
+            }
             break;
     }
 }

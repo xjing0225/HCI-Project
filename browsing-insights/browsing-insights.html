@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browsing Insights</title>
+    <script src="chart.umd.js"></script>
     <link rel="stylesheet" href="browsing-insights.css">
     <script src="browsing-insights.js" defer></script>
     <script src="search.js" defer></script>
     <script src="domain-filtering.js" defer></script>
     <script src="dateTime-filtering.js" defer></script>
+    <script src="insights-generation.js" defer></script>
 </head>
 
 <body>
@@ -23,9 +25,10 @@
         <!-- Home Page Content -->
         <div id="homePage"> 
             <div class="center-content">
-                <h1>Welcome to Browsing Insights</h1>
+                <h1>Welcome to <span class="browsing">Browsing</span> <span class="insights">Insights</span></h1>
                 <p>For searching through your browsing history, please navigate to <a href="#" id="homeToSearch">Search</a></p>
                 <p>For filtered viewing of your browsing history (by dateTime and/or website domain), please navigate to <a href="#" id="homeToTracking">Customized Tracking</a></p>
+                <p>For overviews/comparisons of your activities on specific websites, please navigate to <a href="#" id="homeToInsights">Insights</a></p>
             </div>
         </div>
 
@@ -60,8 +63,6 @@
                 <input type="time" id="endTime">
                 <button id="resetButton">Reset Time</button>
             </section>
-
-
             <section id="domainFilter">
                 <h2>Domain Filter</h2>
                 <select id="filterType">
@@ -76,8 +77,47 @@
         <div id="filterDisplay" class="recordsContainer"></div>
         </div>
         <!-- Insights Page Content -->
-        <div id="insightsPage" style="display: none;"> 
-            <!-- Content for the insights page here -->
+        <div id="insightsPage" style="display: none;">        
+            <!-- Section: Choose a Website -->
+            <section id="chooseWebsite">
+                <h2>Choose a Website(s) for Overview of Your Activities</h2>
+                <div id="websiteSelector">
+                    <label for="websiteInput">Search Website:</label>
+                    <input type="text" id="websiteInput" placeholder="Type in the website...">
+                    <ul id="websiteSuggestionList"></ul>
+                </div>
+
+                <div id="selectedWebsites">
+                    <label>Selected Websites:</label>
+                    <ul id="websiteSelectedList"></ul>
+                </div>
+            </section>
+
+            <!-- Graphs Container -->
+            <div id="graphsContainer">
+                <!-- Toggle for Bar View -->
+                <section>
+                    <label for="stackedToggle">Stacked View:</label>
+                    <input type="checkbox" id="stackedToggle">
+                </section>
+                <!-- Day of Week Graph -->
+                <section>
+                    <h3>Past 7 Days</h3>
+                    <canvas id="past7DaysGraph"></canvas>
+                </section>
+
+                <!-- Day of Month Graph -->
+                <section>
+                    <h3>Past 30 Days</h3>
+                    <canvas id="past30DaysGraph"></canvas>
+                </section>
+
+                <!-- Month Graph -->
+                <section>
+                    <h3>Months</h3>
+                    <canvas id="monthsGraph"></canvas>
+                </section>
+            </div>
         </div>
     </main>
 </body>

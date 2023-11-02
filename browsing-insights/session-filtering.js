@@ -10,3 +10,5 @@ function setColorForTransition(record, recordEntry) {
         recordEntry.style.backgroundColor  = "rgb(216, 242, 212)";
     }
 }
+
+

@@ -52,6 +52,38 @@ nav a.selected {
     font-size: larger;
 }
 
+
+/* record display */
+.date-title {
+    margin-top: 20px;
+    font-weight: bold;
+}
+.record-entry {
+    margin: 15px 0;
+    display: flex;          
+    align-items: center;    
+}
+.record-entry span {
+    width: 80px; 
+}
+
+.record-entry a {
+    margin: 0 20px;
+    display: block;      
+    width: 500px;        
+    white-space: nowrap; 
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+}
+
+.favicon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+
 /* home Page*/
 #homePage {
     /* display: flex; */
@@ -69,7 +101,7 @@ nav a.selected {
 }
 
 /* search Page*/
-#searchPage,#trackingPage {
+#searchPage,#trackingPage,#insightsPage {
     padding-left: 400px;
 }
 
@@ -98,7 +130,7 @@ nav a.selected {
     display: inline;
 }
 
-/* date filtering and  sorting */
+/* date filtering and sorting */
 .dateSortContainer {
     display: flex;     
     align-items: center; 
@@ -140,6 +172,7 @@ nav a.selected {
     width: 300px;
 
 }
+
 #suggestionList, #selectedList {
     list-style-type: none;
     padding: 10px;
@@ -166,33 +199,40 @@ nav a.selected {
     color:rgb(46, 105, 224);
 }
 
-/* record display */
-.date-title {
-    margin-top: 20px;
+/* insights page */
+#chooseWebsite {
+    padding: 10px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+#websiteSelector {
+    margin-bottom: 10px;
+}
+
+#websiteSuggestionList{
+    list-style-type: none;
+    padding: 10px;
+}
+
+#websiteSuggestionList li:hover {
     font-weight: bold;
-}
-.record-entry {
-    margin: 15px 0;
-    display: flex;          
-    align-items: center;    
-}
-.record-entry span {
-    width: 80px; 
+    color: rgb(46, 105, 224);
+    cursor: pointer;
 }
 
-.record-entry a {
-    margin: 0 20px;
-    display: block;      
-    width: 500px;        
-    white-space: nowrap; 
-    overflow: hidden;    
-    text-overflow: ellipsis; 
+
+canvas {
+    display: block;
+    max-width: 75%;
+    height: calc(100% - 40px); /* Adjust 10px to how much shorter you want */
 }
 
-.favicon {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    margin-right: 8px;
+
+.browsing {
+    color: rgba(141, 207, 255, 1);
 }
 
+.insights {
+    color: rgba(249, 228, 38, 1);
+}
