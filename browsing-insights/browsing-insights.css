@@ -52,6 +52,17 @@ nav a.selected {
     font-size: larger;
 }
 
+footer.nav-footer {
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.05); /* Slightly different background for the footer */
+    color: #333; 
+    box-shadow: none; 
+    /* margin-top: 350px; */
+    position:absolute;
+    bottom:50px;
+}
+
 
 /* record display */
 .date-title {
@@ -157,7 +168,6 @@ nav a.selected {
 }
 
 /* customized tracking page */
-
 #dateTimeFilter {
     padding: 10px;
     margin-top: 50px;
@@ -171,6 +181,7 @@ nav a.selected {
  
 #domainInput {
     width: 300px;
+
 }
 
 #suggestionList, #selectedList {
@@ -199,8 +210,7 @@ nav a.selected {
     color:rgb(46, 105, 224);
 }
 
-
-/* visit trend page */
+/* insights page */
 #chooseWebsite {
     padding: 10px;
     margin-top: 50px;
@@ -237,15 +247,3 @@ canvas {
 .insights {
     color: rgba(249, 228, 38, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
