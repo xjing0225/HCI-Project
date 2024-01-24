@@ -109,6 +109,16 @@ function generatePastDaysLabels(days) {
     }).reverse();
 }
 
+function generateMonthLabels() {
+    const months = [];
+    const currentDate = new Date();
+    for (let i = 0; i < 12; i++) {
+        const monthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+        months.unshift(monthDate.toLocaleDateString('en-US', { month: 'short' }));
+    }
+    return months;
+}
+
 let chartInstances = { past7Days: null, past30Days: null, months: null};
 
 function visualizeData(isStacked) {
@@ -122,8 +132,10 @@ function visualizeData(isStacked) {
     generateGraph('past30Days', past30DaysLabels, processedData.past30Days, isStacked);
 
     // Months
-    generateGraph('months', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], processedData.months, isStacked);
+    const monthLabels = generateMonthLabels();
+    generateGraph('months', monthLabels, processedData.months, isStacked);
 }
+
 
 //utilize chart.js for generating bar plots (stacked or side-by-side comparison)
 function generateGraph(type, labels, data, isStacked) {

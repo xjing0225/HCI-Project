@@ -157,6 +157,7 @@ nav a.selected {
 }
 
 /* customized tracking page */
+
 #dateTimeFilter {
     padding: 10px;
     margin-top: 50px;
@@ -170,7 +171,6 @@ nav a.selected {
  
 #domainInput {
     width: 300px;
-
 }
 
 #suggestionList, #selectedList {
@@ -199,7 +199,8 @@ nav a.selected {
     color:rgb(46, 105, 224);
 }
 
-/* insights page */
+
+/* visit trend page */
 #chooseWebsite {
     padding: 10px;
     margin-top: 50px;
@@ -236,3 +237,15 @@ canvas {
 .insights {
     color: rgba(249, 228, 38, 1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
